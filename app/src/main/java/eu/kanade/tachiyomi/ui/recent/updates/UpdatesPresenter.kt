@@ -255,20 +255,8 @@ class UpdatesPresenter(
             }
             if (deletedUpdates.isEmpty()) return@launchIO
 
-            // TODO: Don't do this fake status update
             state.uiModels = uiModels.toMutableList().apply {
-                deletedUpdates.forEach { deletedUpdate ->
-                    val modifiedIndex = indexOf(deletedUpdate)
-                    var uiModel = removeAt(modifiedIndex)
-                    if (uiModel is UpdatesUiModel.Item) {
-                        val item = uiModel.item.copy(
-                            downloadStateProvider = { Download.State.NOT_DOWNLOADED },
-                            downloadProgressProvider = { 0 },
-                        )
-                        uiModel = UpdatesUiModel.Item(item)
-                    }
-                    add(modifiedIndex, uiModel)
-                }
+                removeAll(deletedUpdates)
             }
         }
     }
